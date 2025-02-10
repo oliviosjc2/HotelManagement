@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+  hm-api:
+    build:
+      context: ..
+      dockerfile: HM.API/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hm-network
+
+  postgres:
+    image: postgres:13
+    container_name: hm-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - hm-network
+
+  redis:
+    image: redis:6
+    container_name: hm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - hm-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  hm-network:
+    driver: bridge

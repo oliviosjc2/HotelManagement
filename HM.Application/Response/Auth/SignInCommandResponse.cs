@@ -1,0 +1,8 @@
+﻿namespace HM.Application.Response.Auth
+{
+    public class SignInCommandResponse
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
+    }
+}
